@@ -1,0 +1,14 @@
+{
+    "name": "koa.js实战",
+    "version": "0.0.1",
+    "description": "讲解使用koa.js进行应用开发必备的知识",
+    "generator": "site",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/minghe/koa.js-book.git"
+    },
+    "author": "minghe36@126.com",
+    "dependencies": {
+        "gitbook-plugin-autocover": "0.0.5"
+    }
+}
