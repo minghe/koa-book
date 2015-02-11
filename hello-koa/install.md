@@ -68,6 +68,12 @@ k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。
 这样日后运行，依旧只要使用：
 
     node app.js
+    
+app.js 的核心代码是：
+
+    var koa = require('koa');
+    var app = koa();
+    app.listen(3000);
 
 
 
