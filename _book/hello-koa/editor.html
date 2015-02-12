@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>为什么要写这本书 | 《koa实战》</title>
+        <title>编辑器与调试 | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,8 @@
         
     
     
-    <link rel="next" href="../hello-koa/what.html" />
     
-    
-    <link rel="prev" href="../hello-koa/index.html" />
+    <link rel="prev" href="../hello-koa/install.html" />
     
 
         
@@ -34,7 +32,7 @@
 
 
         
-    <div class="book" data-level="1.1" data-basepath=".." data-revision="1423711719653">
+    <div class="book" data-level="1.4" data-basepath=".." data-revision="1423711719653">
     
 
 <div class="book-summary">
@@ -83,7 +81,7 @@
                 
     
         
-        <li class="chapter active" data-level="1.1" data-path="hello-koa/why.html">
+        <li class="chapter " data-level="1.1" data-path="hello-koa/why.html">
             
                 
                     <a href="../hello-koa/why.html">
@@ -131,7 +129,7 @@
         </li>
     
         
-        <li class="chapter " data-level="1.4" data-path="hello-koa/editor.html">
+        <li class="chapter active" data-level="1.4" data-path="hello-koa/editor.html">
             
                 
                     <a href="../hello-koa/editor.html">
@@ -240,14 +238,42 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_6">
+                    <section class="normal" id="section-gitbook_2">
                     
-                        <h1 id="">为什么写这本书？</h1>
-<p>koa 将是未来主流的 node 框架，但市面上的书籍和网上的教程还是以 express 居多，而 koa 的教程都过于浅显，无法很好地引导 node 工程师使用 koa，所以就有写这本《koa实战的想法》。</p>
-<p>这本书是我个人在阿里中使用node进行应用开发和<a href="http://apebook.org" target="_blank">apebook</a>电子书平台开发的经验总结。</p>
-<p>明河的个人能力有限，如有错误的地方，欢迎提交<a href="https://github.com/minghe/koa-book/issues" target="_blank">issue</a>。</p>
-<p>koa 的生态圈处于快速发展的阶段，书中使用的模块如果已经过时，请提交<a href="https://github.com/minghe/koa-book/issues" target="_blank">issue</a>说明下，我会斟酌更换。</p>
-<p>谢谢大家支持。</p>
+                        <h1 id="">编辑器与调试</h1>
+<p>前端使用的编辑器五花八门，主流的有 webstorm 或 phpstorm、Sublime Text、vim等，用于编写 node 应用，推荐使用 <a href="http://www.jetbrains.com/webstorm/" target="_blank">webstorm</a>。</p>
+<ul>
+<li>支持 cmd 语法，且可以检查依赖模块路径的正确性</li>
+<li>错误检查</li>
+<li>内置 node 调试服务</li>
+<li>内置命令行工具</li>
+<li>内置单元测试工具</li>
+<li>支持ES6语法</li>
+<li>集成了git版本控制</li>
+</ul>
+<h3 id="-es6-">开启 ES6 支持</h3>
+<p>由于 koa 应用会使用 ES6 的语法，所以我们修改 webstorm js的配置，避免语法误报错：</p>
+<p><img src="images/editor-1.png" alt="es6"></p>
+<h3 id="-webstorm--koa-">在 webstorm 中启动 koa 应用</h3>
+<p>打开 book/app.js ，选择菜单的 &quot;Run&quot;：</p>
+<p><img src="images/editor-2.png" alt="debug"></p>
+<p>点击配置编辑，我们需要调整下配置：</p>
+<p><img src="images/editor-3.png" alt="config"></p>
+<p>留意 node 参数配置，我们需要把 --harmony 配置上。</p>
+<p>除了可以配置 node 参数外，还可以配置应用的环境变量。</p>
+<p>比如我们配置个 NODE_ENV=local，用于开启本地环境配置：</p>
+<p><img src="images/editor-4.png" alt="config"></p>
+<p>配置完成后，我们就可以使用 webstorm 来启动 koa 应用，菜单 “Run” -&gt; “Run book”，启动成功后：</p>
+<p><img src="images/editor-5.png" alt="config"></p>
+<p>左侧按钮依次是 重启、停止、暂停。</p>
+<h3 id="-webstorm--koa-">在 webstorm 中调试 koa 应用</h3>
+<p>打开 book/app.js ，我们在第九行打个断点（点击第九行行号右侧空白处）：</p>
+<p><img src="images/editor-6.png" alt="config"></p>
+<p>点击菜单 “Run” -&gt; “Debug book” ,访问 <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> :</p>
+<p><img src="images/editor-7.png" alt="config"></p>
+<p>就会断在第九行，可以查看变量信息，debug 过程跟浏览器断点调试差不多，可以通过面板的右上角按钮控制debug。</p>
+<p>debug 的调试效率远比 console.log() 来的高，推荐使用。</p>
+<p>webstorm 也集成了单元测试工具，这等到讲解 koa 应用单元测试时，我们再来讲解。</p>
 
                     
                     </section>
@@ -258,10 +284,8 @@
         </div>
 
         
-        <a href="../hello-koa/index.html" class="navigation navigation-prev " aria-label="Previous page: 第1章koa入门"><i class="fa fa-angle-left"></i></a>
+        <a href="../hello-koa/install.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 安装和运行"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="../hello-koa/what.html" class="navigation navigation-next " aria-label="Next page: koa是什么"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
