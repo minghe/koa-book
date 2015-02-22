@@ -12,4 +12,6 @@
     * [应用环境配置](start/env.md)
     * [debug模块的使用](start/debug.md)
     * [日志记录](start/log.md)
+* [第3章单元测试](test/index.md)
+    * [node单元测试初见](test/why.md)
     

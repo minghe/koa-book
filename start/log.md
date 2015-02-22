@@ -1,6 +1,6 @@
 # 日志记录
 
-koa 没有日志记录中间件，我们使用 [mini-logger](https://www.npmjs.com/package/mini-logger) 。
+日志是应用不可缺少的部分，但 koa 没有日志记录中间件，我们使用 [mini-logger](https://www.npmjs.com/package/mini-logger) 。
 
 mini-logger 会创建日志记录文件，自动使用日期归档，而且还可以自定义日志分类。
 
