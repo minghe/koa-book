@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>编辑器与调试 | 《koa实战》</title>
+        <title>koa应用初见 | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,10 @@
         
     
     
-    <link rel="next" href="../start/index.html" />
+    <link rel="next" href="../start/router.html" />
     
     
-    <link rel="prev" href="../hello-koa/install.html" />
+    <link rel="prev" href="../start/index.html" />
     
 
         
@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-level="1.4" data-basepath=".." data-revision="1424571492769">
+    <div class="book" data-level="2.1" data-basepath=".." data-revision="1424571492769">
     
 
 <div class="book-summary">
@@ -131,7 +131,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.4" data-path="hello-koa/editor.html">
+        <li class="chapter " data-level="1.4" data-path="hello-koa/editor.html">
             
                 
                     <a href="../hello-koa/editor.html">
@@ -169,7 +169,7 @@
                 
     
         
-        <li class="chapter " data-level="2.1" data-path="start/one.html">
+        <li class="chapter active" data-level="2.1" data-path="start/one.html">
             
                 
                     <a href="../start/one.html">
@@ -342,42 +342,57 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_2">
+                    <section class="normal" id="section-gitbook_11">
                     
-                        <h1 id="">编辑器与调试</h1>
-<p>前端使用的编辑器五花八门，主流的有 webstorm 或 phpstorm、Sublime Text、vim等，用于编写 node 应用，推荐使用 <a href="http://www.jetbrains.com/webstorm/" target="_blank">webstorm</a>。</p>
-<ul>
-<li>支持 cmd 语法，且可以检查依赖模块路径的正确性</li>
-<li>错误检查</li>
-<li>内置 node 调试服务</li>
-<li>内置命令行工具</li>
-<li>内置单元测试工具</li>
-<li>支持ES6语法</li>
-<li>集成了git版本控制</li>
-</ul>
-<h3 id="-es6-">开启 ES6 支持</h3>
-<p>由于 koa 应用会使用 ES6 的语法，所以我们修改 webstorm js的配置，避免语法误报错：</p>
-<p><img src="images/editor-1.png" alt="es6"></p>
-<h3 id="-webstorm--koa-">在 webstorm 中启动 koa 应用</h3>
-<p>打开 book/app.js ，选择菜单的 &quot;Run&quot;：</p>
-<p><img src="images/editor-2.png" alt="debug"></p>
-<p>点击配置编辑，我们需要调整下配置：</p>
-<p><img src="images/editor-3.png" alt="config"></p>
-<p>留意 node 参数配置，我们需要把 --harmony 配置上。</p>
-<p>除了可以配置 node 参数外，还可以配置应用的环境变量。</p>
-<p>比如我们配置个 NODE_ENV=local，用于开启本地环境配置：</p>
-<p><img src="images/editor-4.png" alt="config"></p>
-<p>配置完成后，我们就可以使用 webstorm 来启动 koa 应用，菜单 “Run” -&gt; “Run book”，启动成功后：</p>
-<p><img src="images/editor-5.png" alt="config"></p>
-<p>左侧按钮依次是 重启、停止、暂停。</p>
-<h3 id="-webstorm--koa-">在 webstorm 中调试 koa 应用</h3>
-<p>打开 book/app.js ，我们在第九行打个断点（点击第九行行号右侧空白处）：</p>
-<p><img src="images/editor-6.png" alt="config"></p>
-<p>点击菜单 “Run” -&gt; “Debug book” ,访问 <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> :</p>
-<p><img src="images/editor-7.png" alt="config"></p>
-<p>就会断在第九行，可以查看变量信息，debug 过程跟浏览器断点调试差不多，可以通过面板的右上角按钮控制debug。</p>
-<p>debug 的调试效率远比 console.log() 来的高，推荐使用。</p>
-<p>webstorm 也集成了单元测试工具，这等到讲解 koa 应用单元测试时，我们再来讲解。</p>
+                        <h1 id="koa">koa应用初见</h1>
+<p>打开 <a href="https://www.npmjs.com/package/generator-k" target="_blank">generator-k</a> 生成的app.js 。</p>
+<p>代码有些多，不利于作为上手学习，我们创建个 book/demo.js，内容如下：</p>
+<pre><code>var koa = require(&#39;koa&#39;);
+var app = koa();
+
+app.use(function *(){
+    var path = this.path;
+    this.body = path;
+});
+
+app.listen(3000);
+</code></pre><p>运行命令：</p>
+<pre><code>node --harmony demo.js
+</code></pre><p>访问 <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>，页面会打印出当前 url 的路径 “/”，使用 <a href="http://localhost:3000/demo" target="_blank">http://localhost:3000/demo</a> 访问试试，输出的是/demo。</p>
+<p>我们来看下代码含义。</p>
+<p>初始化 koa ：</p>
+<pre><code>var koa = require(&#39;koa&#39;);
+var app = koa();
+</code></pre><p>使用 app.use() 注入中间件，这是与 express 最大不同的地方。</p>
+<p>所有的koa中间件，必须是 generator function ，即 function *(){} 语法，不然会报错。</p>
+<p>中间件 的上下文 this，指向用户当前的请求，中间件只有在请求时才会触发逻辑，比如获取当前请求的路径，可以使用：</p>
+<pre><code>app.use(function *(){
+    var path = this.path;
+});
+</code></pre><p>建议在中间件中打个断点，看一下 this 的信息，非常丰富，后面会展开论述。</p>
+<p>this.body 用于控制输出到页面的内容，比如：</p>
+<pre><code>app.use(function *(){
+    this.body = &#39;&lt;p&gt;我是个html片段&lt;/p&gt;&#39;;
+});
+</code></pre><p>可以注入多个中间件，koa 会从上到下执行，然后从下到上执行，关于中间件的执行顺序问题，后面会展开论述。</p>
+<pre><code>app.use(function *(){
+    this.demo = &#39;test text&#39;;
+});
+
+app.use(function *(){
+    this.body = this.demo;
+});
+</code></pre><p>app.use() 究竟发生了什么不可思议的化学反应呢？</p>
+<p>其实 app.use() 就干了一件事，就是将中间件放入一个数组，真正执行逻辑的是：</p>
+<pre><code>app.listen(3000);
+</code></pre><p>koa 的 listen() 除了指定了 http 服务的端口号外，还会启动 http server，等价于：</p>
+<pre><code>var http = require(&#39;http&#39;);
+http.createServer(app.callback()).listen(3000);
+</code></pre><p>后面这种繁琐的形式有什么用呢？</p>
+<p>一个典型的场景是启动 https 服务，默认 app.listen(); 是启动 http 服务，启动 https 服务就需要：</p>
+<pre><code>var https = require(&#39;https&#39;);
+https.createServer(app.callback()).listen(3000);
+</code></pre><p>关于 https 服务后面章节会展开论述，这里先跳过。</p>
 
                     
                     </section>
@@ -388,10 +403,10 @@
         </div>
 
         
-        <a href="../hello-koa/install.html" class="navigation navigation-prev " aria-label="Previous page: 安装和运行"><i class="fa fa-angle-left"></i></a>
+        <a href="../start/index.html" class="navigation navigation-prev " aria-label="Previous page: 第2章koa入门"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../start/index.html" class="navigation navigation-next " aria-label="Next page: 第2章koa入门"><i class="fa fa-angle-right"></i></a>
+        <a href="../start/router.html" class="navigation navigation-next " aria-label="Next page: koa路由"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

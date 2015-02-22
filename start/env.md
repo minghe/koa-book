@@ -7,6 +7,8 @@
     NODE_ENV=development node --harmony app.js
     
 我们配置了个 NODE_ENV 环境变量，定义为开发环境（development）。
+
+（PS: WIN下配置环境变量的方式不同，需要使用 set NODE_ENV=development。）
  
 打开 config/config.js，可以找到针对开发环境做的配置：
 

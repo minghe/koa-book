@@ -13,6 +13,22 @@
     
 配置环境变量：DEBUG=book ，这样只会输出 book 分组的 log 信息。
 
+    DEBUG=book NODE_ENV=local node --harmony app.js
+    
+多个环境变量，使用空格隔开。
+
+访问页面后，输出的log是：
+
+  book env: local +0ms
+  
+如果去掉环境变量 DEBUG=book 将不输出任何信息，这样当我们需要调试某个模块文件时，可以保证只有该模块的 log ，不会被其他模块所干扰。
+
+如果我们想输出所有的调试信息呢？
+
+可以使用 DEBUG=* 。
+
+
+
 
     
 
