@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>安装和运行 | 《koa实战》</title>
+        <title>日志记录 | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,8 @@
         
     
     
-    <link rel="next" href="../hello-koa/editor.html" />
     
-    
-    <link rel="prev" href="../hello-koa/what.html" />
+    <link rel="prev" href="../start/debug.html" />
     
 
         
@@ -34,7 +32,7 @@
 
 
         
-    <div class="book" data-level="1.3" data-basepath=".." data-revision="1424575075439">
+    <div class="book" data-level="2.6" data-basepath=".." data-revision="1424575075439">
     
 
 <div class="book-summary">
@@ -115,7 +113,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.3" data-path="hello-koa/install.html">
+        <li class="chapter " data-level="1.3" data-path="hello-koa/install.html">
             
                 
                     <a href="../hello-koa/install.html">
@@ -249,7 +247,7 @@
         </li>
     
         
-        <li class="chapter " data-level="2.6" data-path="start/log.html">
+        <li class="chapter active" data-level="2.6" data-path="start/log.html">
             
                 
                     <a href="../start/log.html">
@@ -358,58 +356,30 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_4">
+                    <section class="normal" id="section-gitbook_11">
                     
-                        <h1 id="">安装与运行</h1>
-<h3 id="-koa">安装 koa</h3>
-<p>由于使用了JavaScript 1.7得新特性，所以Koa要求Node版本至少在 <strong>0.11.x</strong> 以上，且开启 harmony。 </p>
-<p>mac下推荐安装 <a href="https://www.npmjs.org/package/n" target="_blank">n</a> 模块，非常方便地安装多个 node 版本，可以切换使用：</p>
-<pre><code>sudo npm install -g n
-sudo n stable
-</code></pre><p>（ps：stable 使用最新稳定的Node版本）</p>
-<p>win下可以在nodejs的<a href="http://nodejs.org/dist/" target="_blank">下载列表</a>中找到。</p>
-<h3 id="-generator-k">安装 generator-k</h3>
-<p><a href="https://www.npmjs.com/package/generator-k" target="_blank">generator-k</a> 是我写的 koa 项目工程生成器，带有经过筛选的优秀中间件，生成即用。</p>
-<pre><code>npm install -g yo generator-k
-</code></pre><p>generator-k 依赖于 <a href="http://yeoman.io/" target="_blank">yoeman</a>，所以必须安装 yo。</p>
-<p>安装成功后，创建一个 book 目录（作为demo工程），并进入，然后运行：</p>
-<pre><code>yo k
-</code></pre><p>k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。</p>
-<p>生成的目录结构如下：</p>
-<pre><code>.
-├── controller
-│   └── index.js 
-├── router
-│   └── index.js
-├── model
-├── config
-|   ├── config
-|   └── local 
-├── public
-|   ├── js
-|   └── css 
-├── test
-|   └── index-router-spec.js
-├── view
-|   ├── index.xtpl
-|   └── layout
-├── app.js
-└── package.json
-</code></pre><p>后面会详细讲解 koa 的代码组织，这一节我们先跳过。</p>
-<h3 id="">运行应用</h3>
-<p>我们在 book 目录下运行：</p>
-<pre><code>node --harmony app.js
-</code></pre><p>必须加 --harmony ，这样才会支持 ES6 语法。</p>
-<p>如果看到 “listening on port 3000”，说明启动成功了，可以访问 [<a href="http://localhost:3000]试试。" target="_blank">http://localhost:3000]试试。</a></p>
-<p>为了日后运行方便，可以设置个别名：</p>
-<pre><code>alias nod=&quot;node --harmony&quot;
-</code></pre><p>这样日后运行，依旧只要使用：</p>
-<pre><code>node app.js
-</code></pre><p>app.js 的核心代码是：</p>
-<pre><code>var koa = require(&#39;koa&#39;);
-var app = koa();
-app.listen(3000);
-</code></pre>
+                        <h1 id="">日志记录</h1>
+<p>koa 没有日志记录中间件，我们使用 <a href="https://www.npmjs.com/package/mini-logger" target="_blank">mini-logger</a> 。</p>
+<p>mini-logger 会创建日志记录文件，自动使用日期归档，而且还可以自定义日志分类。</p>
+<pre><code>var Logger = require(&#39;mini-logger&#39;);
+var logger = Logger({
+    dir: config.logDir,
+    categories: [ &#39;router&#39;,&#39;model&#39;,&#39;controller&#39;],
+    format: &#39;YYYY-MM-DD-[{category}][.log]&#39;
+});
+</code></pre><ul>
+<li>dir ：指定日志放在哪里</li>
+<li>categories ：自定义日志分类</li>
+<li>format ：日志文件名格式</li>
+</ul>
+<p>记录 Error() 实例：</p>
+<pre><code>logger.error(new Error(&#39;test&#39;));
+</code></pre><p>使用 error() ，会将出错堆栈信息输出到 xxxx-xx-xx-error.log 文件中。</p>
+<p>当定义自定义分类后，会自动注册分类日志方法，比如定义了 categories: [&#39;router&#39;] ：</p>
+<pre><code>logger.router(&#39;test router&#39;);
+</code></pre><p>就有了 logger.router() 方法，并将日志记录到 xxxx-xx-xx-router.log 文件中。</p>
+<p>给日志分类，让我们排查线上问题更有效率。</p>
+
                     
                     </section>
                 
@@ -419,10 +389,8 @@ app.listen(3000);
         </div>
 
         
-        <a href="../hello-koa/what.html" class="navigation navigation-prev " aria-label="Previous page: koa是什么"><i class="fa fa-angle-left"></i></a>
+        <a href="../start/debug.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: debug模块的使用"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="../hello-koa/editor.html" class="navigation navigation-next " aria-label="Next page: 编辑器与调试"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

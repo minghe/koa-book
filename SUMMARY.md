@@ -11,4 +11,5 @@
     * [koa的错误处理](start/error.md)
     * [应用环境配置](start/env.md)
     * [debug模块的使用](start/debug.md)
+    * [日志记录](start/log.md)
     
