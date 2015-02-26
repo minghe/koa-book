@@ -53,15 +53,15 @@ koa-onerror 会在 process.env.NODE_ENV === 'development'（不存在环境变�
     
             
     Error: demo error
-        at Object.<anonymous> (/Users/alibaba/dev/node/k-demo/error.js:5:11)
+        at Object.<anonymous> (/dev/node/k-demo/error.js:5:11)
         at GeneratorFunctionPrototype.next (native)
-        at Object.respond (/Users/alibaba/dev/node/k-demo/node_modules/koa/lib/application.js:172:10)
+        at Object.respond (/dev/node/k-demo/node_modules/koa/lib/application.js:172:10)
         at GeneratorFunctionPrototype.next (native)
-        at Object.<anonymous> (/Users/alibaba/dev/node/k-demo/node_modules/koa/node_modules/koa-compose/index.js:37:12)
+        at Object.<anonymous> (/dev/node/k-demo/node_modules/koa/node_modules/koa-compose/index.js:37:12)
         at GeneratorFunctionPrototype.next (native)
-        at next (/Users/alibaba/dev/node/k-demo/node_modules/koa/node_modules/co/index.js:83:21)
-        at Object.<anonymous> (/Users/alibaba/dev/node/k-demo/node_modules/koa/node_modules/co/index.js:56:5)
-        at Server.<anonymous> (/Users/alibaba/dev/node/k-demo/node_modules/koa/lib/application.js:123:8)
+        at next (/dev/node/k-demo/node_modules/koa/node_modules/co/index.js:83:21)
+        at Object.<anonymous> (/dev/node/k-demo/node_modules/koa/node_modules/co/index.js:56:5)
+        at Server.<anonymous> (/dev/node/k-demo/node_modules/koa/lib/application.js:123:8)
         at Server.EventEmitter.emit (events.js:110:17)
             
 比 “Internal Server Error” 提供的信息多的多。
