@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>安装和运行 | 《koa实战》</title>
+        <title>ES6的generator | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,10 @@
         
     
     
-    <link rel="next" href="../hello-koa/editor.html" />
+    <link rel="next" href="../co/co-use.html" />
     
     
-    <link rel="prev" href="../hello-koa/what.html" />
+    <link rel="prev" href="../co/index.html" />
     
 
         
@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-level="1.3" data-basepath=".." data-revision="1425959524847">
+    <div class="book" data-level="4.1" data-basepath=".." data-revision="1425959524847">
     
 
 <div class="book-summary">
@@ -115,7 +115,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.3" data-path="hello-koa/install.html">
+        <li class="chapter " data-level="1.3" data-path="hello-koa/install.html">
             
                 
                     <a href="../hello-koa/install.html">
@@ -389,7 +389,7 @@
                 
     
         
-        <li class="chapter " data-level="4.1" data-path="co/start.html">
+        <li class="chapter active" data-level="4.1" data-path="co/start.html">
             
                 
                     <a href="../co/start.html">
@@ -578,58 +578,37 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_11">
+                    <section class="normal" id="section-gitbook_8">
                     
-                        <h1 id="">安装与运行</h1>
-<h3 id="-koa">安装 koa</h3>
-<p>由于使用了JavaScript 1.7得新特性，所以Koa要求Node版本至少在 <strong>0.11.x</strong> 以上，且开启 harmony。 </p>
-<p>mac下推荐安装 <a href="https://www.npmjs.org/package/n" target="_blank">n</a> 模块，非常方便地安装多个 node 版本，可以切换使用：</p>
-<pre><code>sudo npm install -g n
-sudo n stable
-</code></pre><p>（ps：stable 使用最新稳定的Node版本）</p>
-<p>win下可以在nodejs的<a href="http://nodejs.org/dist/" target="_blank">下载列表</a>中找到。</p>
-<h3 id="-generator-k">安装 generator-k</h3>
-<p><a href="https://www.npmjs.com/package/generator-k" target="_blank">generator-k</a> 是我写的 koa 项目工程生成器，带有经过筛选的优秀中间件，生成即用。</p>
-<pre><code>npm install -g yo generator-k
-</code></pre><p>generator-k 依赖于 <a href="http://yeoman.io/" target="_blank">yoeman</a>，所以必须安装 yo。</p>
-<p>安装成功后，创建一个 book 目录（作为demo工程），并进入，然后运行：</p>
-<pre><code>yo k
-</code></pre><p>k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。</p>
-<p>生成的目录结构如下：</p>
-<pre><code>.
-├── controller
-│   └── index.js 
-├── router
-│   └── index.js
-├── model
-├── config
-|   ├── config
-|   └── local 
-├── public
-|   ├── js
-|   └── css 
-├── test
-|   └── index-router-spec.js
-├── view
-|   ├── index.xtpl
-|   └── layout
-├── app.js
-└── package.json
-</code></pre><p>后面会详细讲解 koa 的代码组织，这一节我们先跳过。</p>
-<h3 id="">运行应用</h3>
-<p>我们在 book 目录下运行：</p>
-<pre><code>node --harmony app.js
-</code></pre><p>必须加 --harmony ，这样才会支持 ES6 语法。</p>
-<p>如果看到 “listening on port 3000”，说明启动成功了，可以访问 [<a href="http://localhost:3000]试试。" target="_blank">http://localhost:3000]试试。</a></p>
-<p>为了日后运行方便，可以设置个别名：</p>
-<pre><code>alias nod=&quot;node --harmony&quot;
-</code></pre><p>这样日后运行，依旧只要使用：</p>
-<pre><code>node app.js
-</code></pre><p>app.js 的核心代码是：</p>
-<pre><code>var koa = require(&#39;koa&#39;);
-var app = koa();
-app.listen(3000);
-</code></pre>
+                        <h1 id="es6generator">ES6的generator</h1>
+<p>ES6的generator 是 koa 的基础，想要用好 koa 离不开对 generator 的理解。</p>
+<p>定义一个 generator 函数：</p>
+<pre><code>var generator_func = function* () { };
+</code></pre><p>接下来我们要用到 <strong>yield</strong> 关键字，用于停止执行和保存当前的堆栈。</p>
+<p>我们通过一个数字的例子来演示其用法：</p>
+<pre><code>var r = 3;
+
+function* infinite_ap(a) {
+    for( var i = 0; i &lt; 3 ; i++) {
+        a = a + r ;
+        yield a;
+    }
+}
+
+var sum = infinite_ap(5);
+
+console.log(sum.next()); // returns { value : 8, done : false }
+console.log(sum.next()); // returns { value : 11, done: false }
+console.log(sum.next()); // returns { value : 14, done: false }
+console.log(sum.next()); //return { value: undefined, done: true }
+</code></pre><p>infinite_ap generator定义了一个执行3次的循环，每次执行，给a变量加3。</p>
+<p>yield a 会暂停执行并保存当前堆栈，返回当前的a。</p>
+<p>generator 函数与普通函数不同，只定义遍历器，而不会执行，每次调用这个遍历器的next方法，就从函数体的头部或者上一次停下来的地方开始执行，直到遇到下一个yield语句为止。</p>
+<p>yield语句就是暂停标志，next方法遇到yield，就会暂停执行后面的操作，并将紧跟在yield后面的那个表达式的值，作为返回对象的value属性的值。当下一次调用next方法时，再继续往下执行，直到遇到下一个yield语句。如果没有再遇到新的yield语句，就一直运行到函数结束，将return语句后面的表达式的值，作为value属性的值，如果该函数没有return语句，则value属性的值为undefined。</p>
+<p>当第一次调用 <strong>sum.next()</strong> 时 返回的a变量值是5 + 3，同理第二次调用 <strong>sum.next()</strong> ，a变量值是8 +3，知道循环执行结束，返回<strong>done:true</strong>标识。</p>
+<p>大家有没有发现个问题，koa 中 generator 的用法与上述 demo 演示的用法有非常大得差异，那是因为 koa 中的 generator 使用了 <a href="https://www.npmjs.com/package/co" target="_blank">co</a> 进行了封装。</p>
+<p>严重推荐阅读阮一峰老师写的 <a href="http://es6.ruanyifeng.com/#docs/generator" target="_blank">《ES6入门》</a>，有更详细的描述，我们重点来了解下 co 。</p>
+
                     
                     </section>
                 
@@ -639,10 +618,10 @@ app.listen(3000);
         </div>
 
         
-        <a href="../hello-koa/what.html" class="navigation navigation-prev " aria-label="Previous page: koa是什么"><i class="fa fa-angle-left"></i></a>
+        <a href="../co/index.html" class="navigation navigation-prev " aria-label="Previous page: 第4章co精讲"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../hello-koa/editor.html" class="navigation navigation-next " aria-label="Next page: 编辑器与调试"><i class="fa fa-angle-right"></i></a>
+        <a href="../co/co-use.html" class="navigation navigation-next " aria-label="Next page: co的使用"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

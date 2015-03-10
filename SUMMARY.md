@@ -14,4 +14,15 @@
     * [日志记录](start/log.md)
 * [第3章单元测试](test/index.md)
     * [node单元测试初见](test/why.md)
-    
+    * [should断言库](test/should.md)
+    * [mocha异步测试](test/io.md)
+    * [supertest请求测试](test/supertest.md)
+    * [测试覆盖率](test/cov.md)
+* [第4章co精讲](co/index.md)
+    * [ES6的generator](co/start.md)    
+    * [co的使用](co/co-use.md)    
+    * [co的实现](co/co.md)
+    * [co的嵌套使用](co/co-co.md)
+    * [koa中间件实现原理](co/koa.md)
+    * [ES6的promise](co/promise.md)
+        

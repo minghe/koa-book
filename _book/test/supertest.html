@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>安装和运行 | 《koa实战》</title>
+        <title>supertest请求测试 | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,10 @@
         
     
     
-    <link rel="next" href="../hello-koa/editor.html" />
+    <link rel="next" href="../test/cov.html" />
     
     
-    <link rel="prev" href="../hello-koa/what.html" />
+    <link rel="prev" href="../test/io.html" />
     
 
         
@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-level="1.3" data-basepath=".." data-revision="1425959524847">
+    <div class="book" data-level="3.4" data-basepath=".." data-revision="1425959524847">
     
 
 <div class="book-summary">
@@ -115,7 +115,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.3" data-path="hello-koa/install.html">
+        <li class="chapter " data-level="1.3" data-path="hello-koa/install.html">
             
                 
                     <a href="../hello-koa/install.html">
@@ -335,7 +335,7 @@
         </li>
     
         
-        <li class="chapter " data-level="3.4" data-path="test/supertest.html">
+        <li class="chapter active" data-level="3.4" data-path="test/supertest.html">
             
                 
                     <a href="../test/supertest.html">
@@ -578,58 +578,78 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_11">
+                    <section class="normal" id="section-gitbook_25">
                     
-                        <h1 id="">安装与运行</h1>
-<h3 id="-koa">安装 koa</h3>
-<p>由于使用了JavaScript 1.7得新特性，所以Koa要求Node版本至少在 <strong>0.11.x</strong> 以上，且开启 harmony。 </p>
-<p>mac下推荐安装 <a href="https://www.npmjs.org/package/n" target="_blank">n</a> 模块，非常方便地安装多个 node 版本，可以切换使用：</p>
-<pre><code>sudo npm install -g n
-sudo n stable
-</code></pre><p>（ps：stable 使用最新稳定的Node版本）</p>
-<p>win下可以在nodejs的<a href="http://nodejs.org/dist/" target="_blank">下载列表</a>中找到。</p>
-<h3 id="-generator-k">安装 generator-k</h3>
-<p><a href="https://www.npmjs.com/package/generator-k" target="_blank">generator-k</a> 是我写的 koa 项目工程生成器，带有经过筛选的优秀中间件，生成即用。</p>
-<pre><code>npm install -g yo generator-k
-</code></pre><p>generator-k 依赖于 <a href="http://yeoman.io/" target="_blank">yoeman</a>，所以必须安装 yo。</p>
-<p>安装成功后，创建一个 book 目录（作为demo工程），并进入，然后运行：</p>
-<pre><code>yo k
-</code></pre><p>k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。</p>
-<p>生成的目录结构如下：</p>
-<pre><code>.
-├── controller
-│   └── index.js 
-├── router
-│   └── index.js
-├── model
-├── config
-|   ├── config
-|   └── local 
-├── public
-|   ├── js
-|   └── css 
-├── test
-|   └── index-router-spec.js
-├── view
-|   ├── index.xtpl
-|   └── layout
-├── app.js
-└── package.json
-</code></pre><p>后面会详细讲解 koa 的代码组织，这一节我们先跳过。</p>
-<h3 id="">运行应用</h3>
-<p>我们在 book 目录下运行：</p>
-<pre><code>node --harmony app.js
-</code></pre><p>必须加 --harmony ，这样才会支持 ES6 语法。</p>
-<p>如果看到 “listening on port 3000”，说明启动成功了，可以访问 [<a href="http://localhost:3000]试试。" target="_blank">http://localhost:3000]试试。</a></p>
-<p>为了日后运行方便，可以设置个别名：</p>
-<pre><code>alias nod=&quot;node --harmony&quot;
-</code></pre><p>这样日后运行，依旧只要使用：</p>
-<pre><code>node app.js
-</code></pre><p>app.js 的核心代码是：</p>
+                        <h1 id="supertest">supertest请求测试</h1>
+<p>在 node 业务应用中，我们经常需要测试路由的可用性，如何处理呢？</p>
+<p>可以使用 supertest 模块，supertest 专门用于 http 断言，支持 koa 的 http 请求测试。</p>
+<p>为了保证应用的可测试性，我们需要把应用脚本比如 app.js 中的 koa 实例暴露出来：</p>
 <pre><code>var koa = require(&#39;koa&#39;);
 var app = koa();
-app.listen(3000);
-</code></pre>
+//一堆中间件...
+module.exports = app;
+</code></pre><p>用例写法：</p>
+<pre><code>var superagent = require(&#39;supertest&#39;);
+var app = require(&#39;../app&#39;);
+
+function request() {
+    return superagent(app.listen());
+}
+
+describe(&#39;Routes&#39;, function () {
+    describe(&#39;GET /&#39;, function () {
+        it(&#39;should return 200&#39;, function (done) {
+            request()
+                .get(&#39;/&#39;)
+                .expect(200, done);
+        });
+    });
+});
+</code></pre><p>superagent(app.listen()) 会截获 koa 的 http 请求，可以使用 get 、 post 等方法，对请求进行测试。</p>
+<pre><code>request()
+    .get(&#39;/&#39;)
+    .expect(200, done);
+</code></pre><p>get(&#39;/&#39;) 即测试首页 get 请求，.expect(200, done) 测试 请求状态码是否为 200 （请求成功），done 是必须传入的，这样请求测试结束后，才能把测试信息推送给mocha处理。</p>
+<p>上述测试代码等价于：</p>
+<pre><code>request()
+    .get(&#39;/&#39;)
+    .expect(200)
+    .end(function(err, res){
+        if (err) return done(err);
+        done();
+    });
+</code></pre><p>.end() 回调会在请求完成后触发，可以在回调中对错误进行处理，res 包含完整的请求信息，可以对这些信息进行测试，比如页面输出的内容等。</p>
+<p>运行命令 ：</p>
+<pre><code>mocha --harmony
+</code></pre><p>留意：测试 koa 的请求必须加--harmony，否者会抛异常。</p>
+<p>我们经常需要对 json 接口的数据结构合法性进行测试，如何借助 supertest 实现测试呢？</p>
+<p>我们新建个 /api/user/:id 的路由，返回一个用户信息：</p>
+<pre><code>app.get(&#39;/api/user/:id&#39;,function *(){
+    var user = {name:&#39;minghe&#39;,email:&#39;minghe36@gmail.com&#39;};
+    user = JSON.stringify(user);
+    this.body = user;
+})
+</code></pre><p>测试此路由是否返回正确的数据：</p>
+<pre><code>it(&#39;should be json&#39;,function(done){
+    request()
+        .get(&#39;/api/user/1&#39;)
+        .expect(200)
+        .end(function(err, res){
+            if (err) return done(err);
+            var text = res.text;
+            var json = JSON.parse(text);
+            json.should.have.property(&#39;email&#39;);
+            json.should.have.property(&#39;minghe&#39;);
+            done();
+        });
+})
+</code></pre><p>supertest 很强大，可以设置请求的头信息，使用 set() ：</p>
+<pre><code>request()
+    .get(&#39;/&#39;)
+    .set(&#39;Accept&#39;, &#39;application/json&#39;)
+    .expect(&#39;Content-Type&#39;, /json/)    
+</code></pre><p>而 expect() 除了支持状态码测试外，还支持头信息测试：.expect(&#39;Content-Type&#39;, /json/) 。</p>
+
                     
                     </section>
                 
@@ -639,10 +659,10 @@ app.listen(3000);
         </div>
 
         
-        <a href="../hello-koa/what.html" class="navigation navigation-prev " aria-label="Previous page: koa是什么"><i class="fa fa-angle-left"></i></a>
+        <a href="../test/io.html" class="navigation navigation-prev " aria-label="Previous page: mocha异步测试"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../hello-koa/editor.html" class="navigation navigation-next " aria-label="Next page: 编辑器与调试"><i class="fa fa-angle-right"></i></a>
+        <a href="../test/cov.html" class="navigation navigation-next " aria-label="Next page: 测试覆盖率"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

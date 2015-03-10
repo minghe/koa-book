@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>安装和运行 | 《koa实战》</title>
+        <title>co的嵌套使用 | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,10 @@
         
     
     
-    <link rel="next" href="../hello-koa/editor.html" />
+    <link rel="next" href="../co/koa.html" />
     
     
-    <link rel="prev" href="../hello-koa/what.html" />
+    <link rel="prev" href="../co/co.html" />
     
 
         
@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-level="1.3" data-basepath=".." data-revision="1425959524847">
+    <div class="book" data-level="4.4" data-basepath=".." data-revision="1425959524847">
     
 
 <div class="book-summary">
@@ -115,7 +115,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.3" data-path="hello-koa/install.html">
+        <li class="chapter " data-level="1.3" data-path="hello-koa/install.html">
             
                 
                     <a href="../hello-koa/install.html">
@@ -437,7 +437,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.4" data-path="co/co-co.html">
+        <li class="chapter active" data-level="4.4" data-path="co/co-co.html">
             
                 
                     <a href="../co/co-co.html">
@@ -578,58 +578,94 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_11">
+                    <section class="normal" id="section-gitbook_2">
                     
-                        <h1 id="">安装与运行</h1>
-<h3 id="-koa">安装 koa</h3>
-<p>由于使用了JavaScript 1.7得新特性，所以Koa要求Node版本至少在 <strong>0.11.x</strong> 以上，且开启 harmony。 </p>
-<p>mac下推荐安装 <a href="https://www.npmjs.org/package/n" target="_blank">n</a> 模块，非常方便地安装多个 node 版本，可以切换使用：</p>
-<pre><code>sudo npm install -g n
-sudo n stable
-</code></pre><p>（ps：stable 使用最新稳定的Node版本）</p>
-<p>win下可以在nodejs的<a href="http://nodejs.org/dist/" target="_blank">下载列表</a>中找到。</p>
-<h3 id="-generator-k">安装 generator-k</h3>
-<p><a href="https://www.npmjs.com/package/generator-k" target="_blank">generator-k</a> 是我写的 koa 项目工程生成器，带有经过筛选的优秀中间件，生成即用。</p>
-<pre><code>npm install -g yo generator-k
-</code></pre><p>generator-k 依赖于 <a href="http://yeoman.io/" target="_blank">yoeman</a>，所以必须安装 yo。</p>
-<p>安装成功后，创建一个 book 目录（作为demo工程），并进入，然后运行：</p>
-<pre><code>yo k
-</code></pre><p>k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。</p>
-<p>生成的目录结构如下：</p>
-<pre><code>.
-├── controller
-│   └── index.js 
-├── router
-│   └── index.js
-├── model
-├── config
-|   ├── config
-|   └── local 
-├── public
-|   ├── js
-|   └── css 
-├── test
-|   └── index-router-spec.js
-├── view
-|   ├── index.xtpl
-|   └── layout
-├── app.js
-└── package.json
-</code></pre><p>后面会详细讲解 koa 的代码组织，这一节我们先跳过。</p>
-<h3 id="">运行应用</h3>
-<p>我们在 book 目录下运行：</p>
-<pre><code>node --harmony app.js
-</code></pre><p>必须加 --harmony ，这样才会支持 ES6 语法。</p>
-<p>如果看到 “listening on port 3000”，说明启动成功了，可以访问 [<a href="http://localhost:3000]试试。" target="_blank">http://localhost:3000]试试。</a></p>
-<p>为了日后运行方便，可以设置个别名：</p>
-<pre><code>alias nod=&quot;node --harmony&quot;
-</code></pre><p>这样日后运行，依旧只要使用：</p>
-<pre><code>node app.js
-</code></pre><p>app.js 的核心代码是：</p>
-<pre><code>var koa = require(&#39;koa&#39;);
-var app = koa();
-app.listen(3000);
-</code></pre>
+                        <h1 id="co">co的嵌套使用</h1>
+<p>上一节我们演示了 yield thunk 用法，解答了为什么异步函数必须包装成 thunk 偏函数的形式。</p>
+<p>yield 难道只能是 thunk ？显然不是，理论上 yield 后面可以跟上所有的数据类型，只是在现实场景中最具有意义的是 thunk，还有 generator function。</p>
+<p>这一节我们将探讨如果 yield 后面是 generator function 的情况。</p>
+<p>我们需要判断 yield 后面跟的是 generator function 还是 普通 function：</p>
+<pre><code>//判断是否是 generator function
+function isGeneratorFunction(obj) {
+    var constructor = obj.constructor;
+    if (!constructor) return false;
+    if (&#39;GeneratorFunction&#39; === constructor.name || &#39;GeneratorFunction&#39; === constructor.displayName) return true;
+    return isGenerator(constructor.prototype);
+}
+//判断是否是 generator 对象
+function isGenerator(obj) {
+    return &#39;function&#39; == typeof obj.next &amp;&amp; &#39;function&#39; == typeof obj.throw;
+}
+</code></pre><p>generator function 的特征是 constructor.name === &#39;GeneratorFunction&#39;。</p>
+<p>当初始化 generator function 后返回的是 generator 对象，特征是带有 next 与 throw 方法。</p>
+<p>改造下上一节的 co 代码：</p>
+<pre><code>function co(fn) {
+    return function(done) {
+        var ctx = this;
+        var gen = fn.call(ctx);
+        var it = null;
+        function _next(err, res) {
+            if(err) res = err;
+            it = gen.next(res);
+            //{value:function(){},done:false}
+            if(!it.done){
+                if(isGeneratorFunction(it.value)){
+                    co(it.value).call(ctx,_next);
+                }else{
+                    it.value(_next);
+                }
+            }else{
+                done &amp;&amp; done.call(ctx);
+            }
+        }
+        _next();
+    }
+}
+</code></pre><p>代码会比上一节来得复杂，关键看：</p>
+<pre><code>if(!it.done){
+    if(isGeneratorFunction(it.value)){
+        co(it.value).call(ctx,_next);
+    }else{
+        it.value(_next);
+    }
+}else{
+    done &amp;&amp; done.call(ctx);
+}
+</code></pre><p>isGeneratorFunction(it.value) 我们判断 yield 后是否是 generator function ，如果是递归调用 co() 方法，递归执行该 generator function 的逻辑，直到 done : true，调用外层的 _next() 方法(done &amp;&amp; done.call(ctx);)，执行下一个yield。</p>
+<p>使用 demo ：</p>
+<pre><code>function read(file) {
+    return function(fn){
+        fs.readFile(file, &#39;utf8&#39;, fn);
+    }
+}
+
+function *gf1(){
+    this.a = yield read(&#39;error.js&#39;);
+}
+
+function *gf2(){
+    this.b = yield read(&#39;package.json&#39;);
+}
+
+co(function *(){
+    yield gf1;
+    yield gf2;
+    console.log(this.a.length);
+    console.log(this.b.length);
+})();
+</code></pre><p>有没有点 koa 中间件的赶脚？已经是雏形了哦，下一节我们将利用 co 实现 koa 的中间件机制。</p>
+<p>yield gf1 ，gf1 是个 generator function ，co 包裹的遍历器执行到这里的时候，进入：</p>
+<pre><code>if(isGeneratorFunction(gf1)){
+    co(gf1).call(ctx,_next);
+}
+</code></pre><p>递归调用 co () ，执行 gf1 遍历器中的逻辑，直到 gf1 的 done=true：</p>
+<pre><code>if(!it.done){
+    //...
+}else{
+    _next &amp;&amp; done._next(ctx);
+}
+</code></pre><p>调用上一层的 _next() 执行下一个 yield，demo中是 yield gf2 ，循环执行直到done=true。</p>
+
                     
                     </section>
                 
@@ -639,10 +675,10 @@ app.listen(3000);
         </div>
 
         
-        <a href="../hello-koa/what.html" class="navigation navigation-prev " aria-label="Previous page: koa是什么"><i class="fa fa-angle-left"></i></a>
+        <a href="../co/co.html" class="navigation navigation-prev " aria-label="Previous page: co的实现"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../hello-koa/editor.html" class="navigation navigation-next " aria-label="Next page: 编辑器与调试"><i class="fa fa-angle-right"></i></a>
+        <a href="../co/koa.html" class="navigation navigation-next " aria-label="Next page: koa中间件实现原理"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

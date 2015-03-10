@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>安装和运行 | 《koa实战》</title>
+        <title>co的实现 | 《koa实战》</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.5.0">
@@ -19,10 +19,10 @@
         
     
     
-    <link rel="next" href="../hello-koa/editor.html" />
+    <link rel="next" href="../co/co-co.html" />
     
     
-    <link rel="prev" href="../hello-koa/what.html" />
+    <link rel="prev" href="../co/co-use.html" />
     
 
         
@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-level="1.3" data-basepath=".." data-revision="1425959524847">
+    <div class="book" data-level="4.3" data-basepath=".." data-revision="1425959524847">
     
 
 <div class="book-summary">
@@ -115,7 +115,7 @@
         </li>
     
         
-        <li class="chapter active" data-level="1.3" data-path="hello-koa/install.html">
+        <li class="chapter " data-level="1.3" data-path="hello-koa/install.html">
             
                 
                     <a href="../hello-koa/install.html">
@@ -421,7 +421,7 @@
         </li>
     
         
-        <li class="chapter " data-level="4.3" data-path="co/co.html">
+        <li class="chapter active" data-level="4.3" data-path="co/co.html">
             
                 
                     <a href="../co/co.html">
@@ -578,58 +578,99 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_11">
+                    <section class="normal" id="section-gitbook_4">
                     
-                        <h1 id="">安装与运行</h1>
-<h3 id="-koa">安装 koa</h3>
-<p>由于使用了JavaScript 1.7得新特性，所以Koa要求Node版本至少在 <strong>0.11.x</strong> 以上，且开启 harmony。 </p>
-<p>mac下推荐安装 <a href="https://www.npmjs.org/package/n" target="_blank">n</a> 模块，非常方便地安装多个 node 版本，可以切换使用：</p>
-<pre><code>sudo npm install -g n
-sudo n stable
-</code></pre><p>（ps：stable 使用最新稳定的Node版本）</p>
-<p>win下可以在nodejs的<a href="http://nodejs.org/dist/" target="_blank">下载列表</a>中找到。</p>
-<h3 id="-generator-k">安装 generator-k</h3>
-<p><a href="https://www.npmjs.com/package/generator-k" target="_blank">generator-k</a> 是我写的 koa 项目工程生成器，带有经过筛选的优秀中间件，生成即用。</p>
-<pre><code>npm install -g yo generator-k
-</code></pre><p>generator-k 依赖于 <a href="http://yeoman.io/" target="_blank">yoeman</a>，所以必须安装 yo。</p>
-<p>安装成功后，创建一个 book 目录（作为demo工程），并进入，然后运行：</p>
-<pre><code>yo k
-</code></pre><p>k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。</p>
-<p>生成的目录结构如下：</p>
-<pre><code>.
-├── controller
-│   └── index.js 
-├── router
-│   └── index.js
-├── model
-├── config
-|   ├── config
-|   └── local 
-├── public
-|   ├── js
-|   └── css 
-├── test
-|   └── index-router-spec.js
-├── view
-|   ├── index.xtpl
-|   └── layout
-├── app.js
-└── package.json
-</code></pre><p>后面会详细讲解 koa 的代码组织，这一节我们先跳过。</p>
-<h3 id="">运行应用</h3>
-<p>我们在 book 目录下运行：</p>
-<pre><code>node --harmony app.js
-</code></pre><p>必须加 --harmony ，这样才会支持 ES6 语法。</p>
-<p>如果看到 “listening on port 3000”，说明启动成功了，可以访问 [<a href="http://localhost:3000]试试。" target="_blank">http://localhost:3000]试试。</a></p>
-<p>为了日后运行方便，可以设置个别名：</p>
-<pre><code>alias nod=&quot;node --harmony&quot;
-</code></pre><p>这样日后运行，依旧只要使用：</p>
-<pre><code>node app.js
-</code></pre><p>app.js 的核心代码是：</p>
-<pre><code>var koa = require(&#39;koa&#39;);
-var app = koa();
-app.listen(3000);
-</code></pre>
+                        <h1 id="co-">co 的实现</h1>
+<p><a href="https://github.com/tj/co/blob/master/index.js" target="_blank">co</a> 的实现非常精巧，严重推荐阅读 co 的源码。</p>
+<p>co 代码优化过，新的4.x.x的代码基于Promise调整过，比以前的代码号理解很多。</p>
+<p>上一个版本的可以看<a href="https://github.com/tj/co/blob/3.1.0/index.js" target="_blank">3.1.0</a>的代码，很晦涩，不好理解。</p>
+<p>一个最简单的 co 实现（来自<a href="http://purplebamboo.github.io/2014/05/24/koa-source-analytics-2/" target="_blank">《koa源码分析系列—co实现》</a> ,写的很好推荐阅读，本文代码做了点调整）：</p>
+<pre><code>function co(fn) {
+    return function(done) {
+        var ctx = this;
+        var gen = fn.call(ctx);
+        var it = null;
+        function _next(err, res) {
+            if(err) res = err;
+            it = gen.next(res);
+            //{value:function(){},done:false}
+            if(!it.done){
+                it.value(_next);
+            }
+        }
+        _next();
+    }
+}
+</code></pre><p>调用：</p>
+<pre><code>var fs = require(&#39;fs&#39;);
+//一个 thunk 函数
+function read(file) {
+    return function(fn){
+        fs.readFile(file, &#39;utf8&#39;, fn);
+    }
+}
+co(function *(){
+    var c = 2;
+    console.log(c);
+    var a = yield read(&#39;error.js&#39;);
+    console.log(a.length);
+
+    var b = yield read(&#39;package.json&#39;);
+    console.log(b.length);
+})();
+</code></pre><p>请自行复制以上代码，并给觉得有疑惑的地方打上断点，查看逻辑的执行流程。</p>
+<p>我们需要解开如下几个关键问题：</p>
+<ul>
+<li>问题1：为什么异步函数需要封装成 thunk 偏函数的形式？</li>
+<li>问题2：var a = yield read(&#39;error.js&#39;); 为什么 a 的值是 read() 异步返回的数据？</li>
+<li>问题3：co 接受的 generator function 内部执行逻辑与co内部逻辑的执行顺序是什么样的？</li>
+</ul>
+<p>var gen = fn.call(ctx); <strong>fn</strong> 是co的实参，为一个generator function，再次强调 generator function 调用时，只定义不执行，与普通函数不同。</p>
+<p>co 的核心是想办法递归调用 generator function 的 next()，直到执行完毕，_next() 就是个这样的递归方法：</p>
+<pre><code>function _next(err, res) {
+    if(err) res = err;
+    it = gen.next(res);
+    //{value:function(){},done:false}
+    if(!it.done){
+        it.value(_next);
+    }
+}
+
+_next();
+</code></pre><p>第一次调用 _next() ，执行到 gen.next(res); 开始执行  generator function 遍历器的逻辑：</p>
+<pre><code>var c = 2;
+console.log(c);
+yield read(&#39;error.js&#39;);
+</code></pre><p>留意不是执行到 <strong>var a =</strong> 给a赋值（赋值是在 yield 逻辑之后）的逻辑，遍历器执行到 yield 关键字就中断了，开始执行 read 这个 thunk 的逻辑。</p>
+<p>read是一个偏函数，只做一件事情，返回一个函数：</p>
+<pre><code>function(fn){
+    fs.readFile(file, &#39;utf8&#39;, fn);
+}
+</code></pre><p>核心问题：这里的 fn 的实参是什么？  </p>
+<p>执行完 read() 后，执行 <strong>it =</strong> （co中的 it = gen.next(res); ）的赋值，it的值是：</p>
+<pre><code>{value:function(fn){
+   fs.readFile(file, &#39;utf8&#39;, fn);
+},done:false}
+</code></pre><p>（参见第一节 generator）value 即偏函数 return 的函数，因为遍历器知道后面还有 yield 标识，也就值没有执行完，所以 done 为 false。</p>
+<p>接下来我们执行 value 函数：</p>
+<pre><code>if(!it.done){
+    it.value(_next);
+}
+</code></pre><p>解答前面的核心问题，function(fn){fs.readFile(file, &#39;utf8&#39;, fn);} <strong>fn</strong> 指的是 _next 遍历方法。</p>
+<p>正式执行异步逻辑获取文件数据：fs.readFile(file, &#39;utf8&#39;, fn); 且执行完后，执行 _next()。</p>
+<p>所以 _next 带有二个形参：<strong>err</strong>, <strong>res</strong>，这是 fs.readFile(err,res) 的回调函数的形参。</p>
+<p>res 就是读取文件后返回的文件内容。</p>
+<p>这就解答了前面的 <strong>第一个问题</strong>，为什么异步函数需要封装成 thunk 偏函数的形式，因为我们需要在异步执行完成后，触发 _next 遍历方法。</p>
+<p>_next 进入第二次调用，又执行了次 gen.next(res) 将 res 塞回到遍历器内部，且遍历器执行第二段逻辑：</p>
+<pre><code>var a = res;
+console.log(a.length);
+yield read(&#39;package.json&#39;);
+</code></pre><p>这就解答了前面的 <strong>第二个问题</strong>，var a = yield read(&#39;error.js&#39;); 为什么 a 的值是 read() 异步返回的数据？那是因为 a 的值是 gen.next() 塞回去的。</p>
+<p>执行到 yield 关键字时，又中断了，执行 read 偏函数，it.value(_next) 执行偏函数的返回函数，异步读取文件内容。</p>
+<p>读取完文件后，又再次触发了 _next() 方法 直到 done 为 true 时。</p>
+<p>这就解答了 <strong>第三个问题</strong>：co 接受的 generator function 内部执行逻辑与co内部逻辑的执行顺序是什么样的？</p>
+<p>当你搞清楚了这三个问题，就清楚了 co 的实现原理。</p>
+
                     
                     </section>
                 
@@ -639,10 +680,10 @@ app.listen(3000);
         </div>
 
         
-        <a href="../hello-koa/what.html" class="navigation navigation-prev " aria-label="Previous page: koa是什么"><i class="fa fa-angle-left"></i></a>
+        <a href="../co/co-use.html" class="navigation navigation-prev " aria-label="Previous page: co的使用"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../hello-koa/editor.html" class="navigation navigation-next " aria-label="Next page: 编辑器与调试"><i class="fa fa-angle-right"></i></a>
+        <a href="../co/co-co.html" class="navigation navigation-next " aria-label="Next page: co的嵌套使用"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
