@@ -2,11 +2,13 @@
 
 [co](https://github.com/tj/co/blob/master/index.js) 的实现非常精巧，严重推荐阅读 co 的源码。
 
-co 代码优化过，新的4.x.x的代码基于Promise调整过，比以前的代码号理解很多。
+co 代码优化过，新的4.x.x的代码基于Promise重构过，比以前的代码好理解很多。
 
 上一个版本的可以看[3.1.0](https://github.com/tj/co/blob/3.1.0/index.js)的代码，很晦涩，不好理解。
 
-一个最简单的 co 实现（来自[《koa源码分析系列—co实现》](http://purplebamboo.github.io/2014/05/24/koa-source-analytics-2/) ,写的很好推荐阅读，本文代码做了点调整）：
+4.x.x 的 api 有些变化，co 返回的是一个 promise，这部分的内容留到最后一节讲解。
+
+一个最简单的 co 实现：
 
     function co(fn) {
         return function(done) {
@@ -52,6 +54,7 @@ co 代码优化过，新的4.x.x的代码基于Promise调整过，比以前的�
 * 问题2：var a = yield read('error.js'); 为什么 a 的值是 read() 异步返回的数据？
 * 问题3：co 接受的 generator function 内部执行逻辑与co内部逻辑的执行顺序是什么样的？
 
+（PS:  yield 后的内容称之为 yieldable）
 
 var gen = fn.call(ctx); **fn** 是co的实参，为一个generator function，再次强调 generator function 调用时，只定义不执行，与普通函数不同。
 

@@ -2,7 +2,7 @@
 
 上一节我们演示了 yield thunk 用法，解答了为什么异步函数必须包装成 thunk 偏函数的形式。
 
-yield 难道只能是 thunk ？显然不是，理论上 yield 后面可以跟上所有的数据类型，只是在现实场景中最具有意义的是 thunk，还有 generator function。
+yield 难道只能是 thunk ？显然不是，yield 后面（yieldable）可以跟上 function, promise, generator function, array, or object（不支持 string）。
 
 这一节我们将探讨如果 yield 后面是 generator function 的情况。
 

@@ -34,7 +34,7 @@
 
 
         
-    <div class="book" data-level="4.4" data-basepath=".." data-revision="1425959524847">
+    <div class="book" data-level="4.4" data-basepath=".." data-revision="1426084805168">
     
 
 <div class="book-summary">
@@ -582,7 +582,7 @@
                     
                         <h1 id="co">co的嵌套使用</h1>
 <p>上一节我们演示了 yield thunk 用法，解答了为什么异步函数必须包装成 thunk 偏函数的形式。</p>
-<p>yield 难道只能是 thunk ？显然不是，理论上 yield 后面可以跟上所有的数据类型，只是在现实场景中最具有意义的是 thunk，还有 generator function。</p>
+<p>yield 难道只能是 thunk ？显然不是，yield 后面（yieldable）可以跟上 function, promise, generator function, array, or object（不支持 string）。</p>
 <p>这一节我们将探讨如果 yield 后面是 generator function 的情况。</p>
 <p>我们需要判断 yield 后面跟的是 generator function 还是 普通 function：</p>
 <pre><code>//判断是否是 generator function
