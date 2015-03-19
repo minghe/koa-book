@@ -136,5 +136,5 @@ co返回 promise ，这样可以支持 多个 co 的链式调用：
 
 ### 参考
 
-* [《ECMAScript 6 入门》]（http://es6.ruanyifeng.com/#docs/generator）
+* [《ECMAScript 6 入门》](http://es6.ruanyifeng.com/#docs/generator）
 * [《koa源码分析系列—co实现》](http://purplebamboo.github.io/2014/05/24/koa-source-analytics-2/)
