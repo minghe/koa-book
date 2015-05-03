@@ -58,11 +58,11 @@ assert.equal() 用于判断值是否符合预期。
 
 点击菜单 “Run”，选择配置编辑，添加个 mocha :
 
-[./images/why-1.png](./images/why-1.png)
+![http://gtms03.alicdn.com/tps/i3/TB1L97yHpXXXXaQaXXX0qnIJpXX-1460-708.png](http://gtms03.alicdn.com/tps/i3/TB1L97yHpXXXXaQaXXX0qnIJpXX-1460-708.png)
 
 同样可以配置 node 参数，比如增加 --harmony ,点击运行按钮后：
 
-[./images/why-2.png](./images/why-2.png)
+![http://gtms02.alicdn.com/tps/i2/TB1Uc3EHpXXXXb4XpXXpWgeTFXX-594-161.png](http://gtms02.alicdn.com/tps/i2/TB1Uc3EHpXXXXb4XpXXpWgeTFXX-594-161.png)
 
 webstorm 只会显示出错的用例。
 
