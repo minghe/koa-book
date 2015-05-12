@@ -26,4 +26,5 @@
     * [supertest请求测试](test/supertest.md)
     * [测试覆盖率](test/cov.md)        
 * [第5章模板的使用](xtemplate/index.md)
-    * [初见模板](xtemplate/xtemplate.md)
+    * [几个模板引擎的对比](xtemplate/xtemplate.md)
+    * [xtemplate的使用](xtemplate/use.md)
