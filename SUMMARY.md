@@ -25,7 +25,3 @@
     * [mocha异步测试](test/mocha.md)
     * [supertest请求测试](test/supertest.md)
     * [测试覆盖率](test/cov.md)        
-* [第5章模板的使用](xtemplate/index.md)
-    * [几个模板引擎的对比](xtemplate/xtemplate.md)
-    * [xtemplate的使用](xtemplate/use.md)
-    * [模板中的layout](xtemplate/layout.md)
