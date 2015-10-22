@@ -22,9 +22,9 @@ layout 在服务器端模板中是非常重要的概念（前端模板很少会�
     </html>
     
 
-可以看到，我们将页面基础结构抽离出来了，留意 {{{block ("head")}}} ，block 是xtemplate指令，用于继承于 layout 的页面覆盖 layout 中的 block 占位。
+可以看到，我们将页面基础结构抽离出来了，留意 block ("head") ，block 是xtemplate指令，用于继承于 layout 的页面覆盖 layout 中的 block 占位。
 
-（ **{{{}}}** 表示支持html变量，防止转译。）
+（ **三个刮号** 表示支持html变量，防止转译。）
 
 假设 test.xtpl 继承于 layout/default.xtpl ：
 
@@ -50,7 +50,7 @@ layout 在服务器端模板中是非常重要的概念（前端模板很少会�
     
 block 块状指令用于定义 block 占位的 html 内容，这样我们就可以在通用的 layout，定制页面的业务html内容。
 
-xtemplate的指令分为行内指令与块状指令，比如{{{block("")}}}就是行内指令，而 {{#block("")}} 是块状指令，以 **#**开头，并需要{{/block}}结束标识。
+xtemplate的指令分为行内指令与块状指令，比如 block("") 就是行内指令，而 {{#block("")}} 是块状指令，以 **#**开头，并需要{{/block}}结束标识。
 
 最后页面的渲染结果是：
 
