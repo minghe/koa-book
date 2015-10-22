@@ -1,3 +1,5 @@
+{% raw %}
+
 # 模板中的layout
 
 layout 在服务器端模板中是非常重要的概念（前端模板很少会用），指的是页面的结构布局抽离，比如每个页面的head部分都是一样的，页尾也是一样的，这时候我们就可以定义个 layout （layout也是.xtpl模板），每个页面都继承于这个layout。
@@ -27,7 +29,6 @@ layout 在服务器端模板中是非常重要的概念（前端模板很少会�
 （ **三个刮号** 表示支持html变量，防止转译。）
 
 假设 test.xtpl 继承于 layout/default.xtpl ：
-{% raw %}
     {{extend ("./layout/layout")}}
     
     {{#block ("head")}}
@@ -39,7 +40,7 @@ layout 在服务器端模板中是非常重要的概念（前端模板很少会�
     {{#block ("body")}}
     <p>这是个 koa 的测试页面</p>
     {{/block}}
-{% endraw %}
+    
 使用 **extend()** 指令可以继承于指定的xtpl模块（被继承的模板就是 layout）。
 
     {{#block ("head")}}
@@ -73,3 +74,5 @@ xtemplate的指令分为行内指令与块状指令，比如 block("") 就是行
     </html>
     
 被继承的 layout 共享页面的上下文数据，比如 layout 有个占位变量 {{title}}，页面渲染时 this 上下文存在 title，依旧可以正常替换。
+
+{% endraw %}
