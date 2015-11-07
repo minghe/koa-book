@@ -2,6 +2,7 @@
 ===
 
 * [github地址](https://github.com/minghe/koa-book)
+* [在线阅读地址](http://apebook.org/book/koa-action)
 
 [![koa action](http://cover.apebook.org/1446860163538.jpg)](http://apebook.org/book/koa-action)
 
