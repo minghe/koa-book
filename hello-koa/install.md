@@ -63,7 +63,7 @@ k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。
 
 为了日后运行方便，可以设置个别名：
 
-    alias nod="node --harmony"
+    alias node="node --harmony"
     
 这样日后运行，依旧只要使用：
 
