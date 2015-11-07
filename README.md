@@ -3,9 +3,11 @@
 
 * [github地址](https://github.com/minghe/koa-book)
 
+[![koa action](http://cover.apebook.org/1446860163538.jpg)](http://apebook.org/book/koa-action)
+
 ### 作者
 
-[明河](https://github.com/minghe)，前端工程师，就职于淘宝网，主攻方向是js框架与组件、node应用开发。
+[明河](https://github.com/minghe)，前端工程师，就职于淘宝网。
 
 ### 授权许可
 
