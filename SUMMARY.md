@@ -33,3 +33,5 @@
     * [高级语法](xtemplate/senior.md)
     * [layout特性](xtemplate/layout.md)
     * [自定义命令](xtemplate/custom.md)
+* [第6章 redis 实战](redis/index.md)
+    * [什么是 redis](redis/what.md)
