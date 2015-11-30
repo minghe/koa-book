@@ -10,5 +10,5 @@
 
 这一章只会重点讲解 redis 结合 node 常见的几种用法，更详细的 redis 内容，建议大家购买[《 redis 实战》](https://s.taobao.com/search?initiative_id=tbindexz_20151118&ie=utf8&spm=a21bo.7724922.8452-taobao-item.2&sourceId=tb.index&search_type=item&ssid=s5-e&commend=all&imgfile=&q=redis%E5%AE%9E%E6%88%98&suggest=history_1&_input_charset=utf-8&wq=redis&suggest_query=redis&source=suggest)。
 
-
+## redis的优点
 
