@@ -12,5 +12,4 @@
 
 ## redis的优点
 
-redis
 
