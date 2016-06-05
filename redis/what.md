@@ -16,7 +16,7 @@
 
 ### 使用内存
 
-将数据缓存到内存是最简单的方案，也是最危险的方案，node 相对而言更容易出现内存泄露的问题，不适宜存储大数据消耗内存，不具有持久化能力，应用一旦重启，cache 就消息。
+将数据缓存到内存是最简单的方案，也是最危险的方案，node 相对而言更容易出现内存泄露的问题，不适宜存储大数据消耗内存，不具有持久化能力，应用一旦重启，cache 就消失。
 
 npm 上有大量内存 cache 模块，推荐的有 [memory-cache](https://www.npmjs.com/package/memory-cache)、[super-cache](https://www.npmjs.com/package/super-cache)。
 
