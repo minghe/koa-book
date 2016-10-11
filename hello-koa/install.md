@@ -59,7 +59,7 @@ k 会让你选择是否使用数据库，可以选择 none ，暂时跳过。
 
 必须加 --harmony ，这样才会支持 ES6 语法。
     
-如果看到 “listening on port 3000”，说明启动成功了，可以访问 [http://localhost:3000]试试。
+如果看到 “listening on port 3000”，说明启动成功了，可以访问 [http://localhost:3000](http://localhost:3000) 试试。
 
 为了日后运行方便，可以设置个别名：
 
