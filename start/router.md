@@ -22,16 +22,16 @@ koa是个极简的web框架，简单到连路由模块都没有配备，多个�
 
 注入 koa-router 中间件：
 
-    var router = require('koa-router');
-    app.use(router(app));
+    var router = require('koa-router')();
+    app.use(router.routes());
 
 简单的路由写法：
 
-    app.get('/', function *(next) {
+    router.get('/', function *(next) {
         //我是首页
         //this 指向请求
     });
-    app.get('/detail/:id', function *(next) {
+    router.get('/detail/:id', function *(next) {
         //我是详情页面
         //:id 是路由通配规则，示例请求 /detail/123 就会进入该 generator function 逻辑
         var id = this.params.id; //123
@@ -43,7 +43,7 @@ koa-router 拥有丰富的 api 细节，用好这些 api ，可以让页面代�
 
 比如 param() 方法，用于路由参数的处理：
 
-    app.param('id',function *(id,next){
+    router.param('id',function *(id,next){
         this.id = Number(id);
         if ( typeof this.id != 'number') return this.status = 404;
         yield next;
